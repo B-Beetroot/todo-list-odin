@@ -1,7 +1,169 @@
-body {
-    background-color: rgb(44, 44, 44);
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-#todo-container {
-    color: white;
+body {
+  margin: 0;
+  font-family: sans-serif;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;;
 }
+
+#container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+#sidebar {
+  background-color: #3498db;
+  color: white;
+  padding: 20px;
+  flex: 1 1 200px; 
+}
+
+#content {
+  background-color: #ecf0f1;
+  padding: 20px;
+  flex: 99 1 0;
+}
+
+#sidebar a {
+  display: block;
+  color: white;
+  text-decoration: none;
+  margin: 10px 0;
+}
+
+#sidebar a:hover {
+  text-decoration: underline;
+}
+
+
+#content {
+  font-family: Arial, sans-serif;
+  padding: 20px;
+}
+
+button {
+  margin: 10px 5px;
+  padding: 8px 16px;
+  font-size: 14px;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #005a9e;
+}
+
+h3, h4 {
+  margin-top: 20px;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+
+}
+
+input, textarea, select {
+  width: 100%;
+  padding: 6px;
+  margin-top: 4px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+select[multiple] {
+  height: 100px;
+}
+
+.empty-message {
+  font-style: italic;
+  color: #888;
+  margin-top: 10px;
+}
+
+.todo-item {
+  padding: 6px;
+  border-bottom: 1px solid #eee;
+}
+
+#container {
+  display: flex;
+  flex-grow: 1;
+  min-height: calc(100vh - 60px); 
+}
+
+#main {
+  display: flex;
+  flex-direction: column;
+  flex: 99 1 0;
+}
+
+#page-header {
+  background-color: #2c3e50;
+  color: white;
+  padding: 20px;
+}
+
+#page-footer {
+  background-color: #2c3e50;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  height: 60px;
+  width: 100%;
+}
+
+
+.project-card {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin: 10px 0;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.project-card h4 {
+  margin: 0 0 6px;
+  font-size: 1.2em;
+  color: #333;
+}
+
+.project-card p {
+  margin: 0;
+  color: #666;
+}
+
+.pagination {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.pagination button {
+  margin: 0 4px;
+  padding: 6px 12px;
+  border: none;
+  background-color: lightblue;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
