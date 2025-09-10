@@ -1,169 +1,197 @@
 * {
-  padding: 0;
-  margin: 0;
-  box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
 }
 
 body {
-  margin: 0;
-  font-family: sans-serif;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;;
+	margin: 0;
+	font-family: sans-serif;
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;;
 }
 
 #container {
-  display: flex;
-  flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 #sidebar {
-  background-color: #3498db;
-  color: white;
-  padding: 20px;
-  flex: 1 1 200px; 
+	background-color: #3498db;
+	color: white;
+	padding: 20px;
+	flex: 1 1 200px; 
 }
 
 #content {
-  background-color: #ecf0f1;
-  padding: 20px;
-  flex: 99 1 0;
+	background-color: #ecf0f1;
+	padding: 20px;
+	flex: 99 1 0;
 }
 
 #sidebar a {
-  display: block;
-  color: white;
-  text-decoration: none;
-  margin: 10px 0;
+	display: block;
+	color: white;
+	text-decoration: none;
+	margin: 10px 0;
+	cursor: pointer;
 }
 
 #sidebar a:hover {
-  text-decoration: underline;
+	text-decoration: underline;
 }
 
 
 #content {
-  font-family: Arial, sans-serif;
-  padding: 20px;
+	font-family: Arial, sans-serif;
+	padding: 20px;
 }
 
 button {
-  margin: 10px 5px;
-  padding: 8px 16px;
-  font-size: 14px;
-  background-color: #0078D4;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+	margin: 10px 5px;
+	padding: 8px 16px;
+	font-size: 14px;
+	background-color: #0078D4;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
 }
 
 button:hover {
-  background-color: #005a9e;
+	background-color: #005a9e;
 }
 
 h3, h4 {
-  margin-top: 20px;
-  color: #333;
+	margin-top: 20px;
+	color: #333;
 }
 
 label {
-  display: block;
-  margin-top: 10px;
-  font-weight: bold;
+	display: block;
+	margin-top: 10px;
+	font-weight: bold;
 
 }
 
 input, textarea, select {
-  width: 100%;
-  padding: 6px;
-  margin-top: 4px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+	width: 100%;
+	padding: 6px;
+	margin-top: 4px;
+	margin-bottom: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+	font-size: 14px;
 }
 
 select[multiple] {
-  height: 100px;
+	height: 100px;
 }
 
 .empty-message {
-  font-style: italic;
-  color: #888;
-  margin-top: 10px;
+	font-style: italic;
+	color: #888;
+	margin-top: 10px;
 }
 
 .todo-item {
-  padding: 6px;
-  border-bottom: 1px solid #eee;
+	padding: 6px;
+	border-bottom: 1px solid #eee;
 }
 
 #container {
-  display: flex;
-  flex-grow: 1;
-  min-height: calc(100vh - 60px); 
+	display: flex;
+	flex-grow: 1;
+	min-height: calc(100vh - 60px); 
 }
 
 #main {
-  display: flex;
-  flex-direction: column;
-  flex: 99 1 0;
+	display: flex;
+	flex-direction: column;
+	flex: 99 1 0;
 }
 
 #page-header {
-  background-color: #2c3e50;
-  color: white;
-  padding: 20px;
+	background-color: #2c3e50;
+	color: white;
+	padding: 20px;
 }
 
 #page-footer {
-  background-color: #2c3e50;
-  color: white;
-  padding: 10px 20px;
-  text-align: center;
-  height: 60px;
-  width: 100%;
+	background-color: #2c3e50;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	height: 60px;
+	width: 100%;
 }
 
 
 .project-card {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 12px 16px;
-  margin: 10px 0;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+	border: 1px solid #ccc;
+	border-radius: 8px;
+	padding: 12px 16px;
+	margin: 10px 0;
+	background-color: #f9f9f9;
+	box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .project-card h4 {
-  margin: 0 0 6px;
-  font-size: 1.2em;
-  color: #333;
+	margin: 0 0 6px;
+	font-size: 1.2em;
+	color: #333;
 }
 
 .project-card p {
-  margin: 0;
-  color: #666;
+	margin: 0;
+	color: #666;
 }
 
 .pagination {
-  margin-top: 20px;
-  text-align: center;
+	margin-top: auto;
+	text-align: center;
 }
 
 .pagination button {
-  margin: 0 4px;
-  padding: 6px 12px;
-  border: none;
-  background-color: lightblue;
-  cursor: pointer;
-  border-radius: 4px;
+	margin: 0 4px;
+	padding: 6px 12px;
+	border: none;
+	background-color: lightblue;
+	cursor: pointer;
+	border-radius: 4px;
 }
 
 .pagination button.active {
-  background-color: #007bff;
-  color: white;
-  font-weight: bold;
+	background-color: #007bff;
+	color: white;
+	font-weight: bold;
 }
 
+.project-list {
+	flex-grow: 1;
+}
+
+.project-list-wrapper {
+	display: flex;
+	flex-direction: column;
+	min-height: 100%;
+}
+
+#nav-create {
+	margin-top: 50px;
+}
+
+#nav {
+	margin-top: 50px;
+}
+
+.status-complete {
+    color: green;
+    font-weight: bold;
+}
+
+.status-incomplete {
+    color: orange;
+    font-style: italic;
+}
