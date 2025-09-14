@@ -1,60 +1,56 @@
-import { saveAllProjects, saveProject, currentProjects, Project } from "./projects.js"; 
-import * as domHelper from "./dom-helper.js";
-import { loadHome, loadInbox, loadProjects } from "./dom.js";
+import { Project } from "./projects.js";
 
-export function createProject (projectInput, descInput){
-	const name = projectInput.value.trim();
-	const description = descInput.value.trim();
-	
-	if (!name) return projectInput.reportValidity();
-	if (!description) return descInput.reportValidity();
+export class ProjectManager {
+    constructor(storageKey = "projects") {
+        this.storageKey = storageKey;
+    }
 
-	const newProject = new Project({ name, description });
+    getProjectKey() {
+        return this.storageKey;
+    }
 
-	saveProject(newProject);
+    createProject(project) {
+        const projects = this.getAllProjects();
+        projects.push(project);
+        this._saveProjects(projects);
+    }
 
-	domHelper.clearContent();
-	domHelper.clearPageHeader();
-	loadProjects();
-}
+    getAllProjects() {
+        try {
+            const raw = localStorage.getItem(this.getProjectKey());
+            if (!raw) return [];
+            const parsed = JSON.parse(raw);
+            return parsed.map(Project.fromJSON);
+        } catch (e) {
+            console.error("Failed to load projects:", e);
+            return [];
+        }
+    }
 
-export function getProjectById(projectId) {
-	const allProjects = currentProjects(); 
-	return allProjects.find(project => project.id === projectId);
-}
+    getProjectById(id) {
+        return this.getAllProjects().find(p => p.id === id);
+    }
 
-export function projectUpdate(projectId, projectInput, descInput) {
-	const name = projectInput.value.trim();
-	const description = descInput.value.trim();
+    updateProject(id, updates) {
+        const projects = this.getAllProjects();
+        const index = projects.findIndex(p => p.id === id);
+        if (index === -1) return null;
+        Object.assign(projects[index], updates);
+        this._saveProjects(projects);
+        return projects[index];
+    }
 
-	if (!name) return projectInput.reportValidity();
-	if (!description) return descInput.reportValidity();
+    deleteProject(id) {
+        const projects = this.getAllProjects().filter(p => p.id !== id);
+        this._saveProjects(projects);
+    }
 
-	const allProjects = currentProjects();
-	const index = allProjects.findIndex(project => project.id === projectId);
-
-	if (index === -1) {
-		console.error("Project not found");
-		return;
-	}
-
-	allProjects[index].name = name;
-	allProjects[index].description = description;
-
-	saveAllProjects(allProjects); 
-
-	domHelper.clearContent();
-	domHelper.clearPageHeader();
-	loadProjects(); 
-}
-
-
-export function deleteProject(projectId) {
-	const allProjects = currentProjects();
-	const updatedProjects = allProjects.filter(project => project.id !== projectId);
-	saveAllProjects(updatedProjects); 
-
-	domHelper.clearContent();
-	domHelper.clearPageHeader();
-	loadProjects(); 
+    _saveProjects(projects) {
+        try {
+            const serialized = projects.map(p => p.toJSON());
+            localStorage.setItem(this.getProjectKey(), JSON.stringify(serialized));
+        } catch (e) {
+            console.error("Failed to save projects:", e);
+        }
+    }
 }

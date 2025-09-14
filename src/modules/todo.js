@@ -1,8 +1,4 @@
-
-function getTodoKey() {
-	const STORAGE_KEY = "todos";
-	return STORAGE_KEY
-}
+import { TodoManager } from "./todo-manager.js";
 
 export class TodoItem {
     constructor({
@@ -132,36 +128,56 @@ export class TodoItem {
     }
 }
 
-export const TodoStore = {
-    getAll() {
-        const raw = localStorage.getItem(getTodoKey());
-        if (!raw) return [];
-        return JSON.parse(raw).map(data => TodoItem.fromJSON(data));
-    },
+const sampleTodos = [
+    new TodoItem({
+        title: "Buy groceries",
+        description: "Pick up essentials from the supermarket",
+        dueDate: "2025-09-14T17:00:00",
+        priority: "Medium",
+        checklist: ["Milk", "Eggs", "Bread", "Coffee"]
+    }),
+    new TodoItem({
+        title: "Finish project report",
+        description: "Complete and submit the final draft of the Q3 report",
+        dueDate: "2025-09-15T09:00:00",
+        priority: "High",
+        notes: "Include updated revenue figures and client feedback",
+        checklist: [
+            { text: "Update financials", done: true },
+            { text: "Review client notes", done: false },
+            { text: "Proofread", done: false }
+        ]
+    }),
+    new TodoItem({
+        title: "Call plumber",
+        description: "Fix the leaking kitchen faucet",
+        dueDate: "2025-09-16T12:00:00",
+        priority: "Low"
+    }),
+    new TodoItem({
+        title: "Plan weekend trip",
+        description: "Organize itinerary for hiking trip",
+        dueDate: "2025-09-18T20:00:00",
+        priority: "Medium",
+        checklist: ["Book accommodation", "Pack gear", "Check weather"]
+    }),
+    new TodoItem({
+        title: "Renew car insurance",
+        description: "Policy expires soon—renew online",
+        dueDate: "2025-09-20T23:59:00",
+        priority: "High",
+        notes: "Compare rates from at least 3 providers"
+    })
+];
 
-    getById(id) {
-        return this.getAll().find(todo => todo.id === id);
-    },
+const tm = new TodoManager();
+if (!localStorage.getItem(tm.getTodoKey())) {
+    saveAllTodos(sampleTodos);
+}
 
-    add(todoItem) {
-        const todos = this.getAll();
-        todos.push(todoItem);
-        this.saveAll(todos);
-    },
 
-    update(updatedItem) {
-        const todos = this.getAll().map(todo =>
-            todo.id === updatedItem.id ? updatedItem : todo
-        );
-        this.saveAll(todos);
-    },
-
-    delete(id) {
-        const todos = this.getAll().filter(todo => todo.id !== id);
-        this.saveAll(todos);
-    },
-
-    saveAll(todos) {
-        localStorage.setItem(getTodoKey(), JSON.stringify(todos.map(todo => todo.toJSON())));
-    }
-};
+export function saveAllTodos(todos) {
+    const tm = new TodoManager();
+    const serialized = todos.map(t => (typeof t.toJSON === "function" ? t.toJSON() : t));
+    localStorage.setItem(tm.getTodoKey(), JSON.stringify(serialized));
+}

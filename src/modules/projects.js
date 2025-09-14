@@ -1,75 +1,82 @@
 import { TodoItem } from './todo.js';
-
-function getProjectKey() {
-	const STORAGE_KEY = "projects";
-	return STORAGE_KEY
-}
+import { ProjectManager } from "./project-manager.js";
 
 export class Project {
-	constructor({ name, description = "" }) {
-		this.id = crypto.randomUUID();
-		this.name = name;
-		this.description = description;
-		this.todos = [];
-	}
-/*
-	addTodo(todo) {
-		if (todo instanceof TodoItem) {
-			this.todos.push(todo);
-		} else {
-			throw new Error("Only TodoItem instances can be added.");
-		}
-	}
+    constructor({ name, description = "" }) {
+        this.id = crypto.randomUUID();
+        this.name = name;
+        this.description = description;
+        this.todos = [];
+    }
 
-	removeTodo(todoId) {
-		this.todos = this.todos.filter(todo => todo.id !== todoId);
-	}
+    addTodo(todo) {
+        if (todo instanceof TodoItem) {
+            this.todos.push(todo);
+        } else {
+            throw new Error("Only TodoItem instances can be added.");
+        }
+    }
 
-	getIncompleteTodos() {
-		return this.todos.filter(todo => !todo.completed);
-	}
+    removeTodo(todoId) {
+        this.todos = this.todos.filter(todo => todo.id !== todoId);
+    }
 
-	getCompletedTodos() {
-		return this.todos.filter(todo => todo.completed);
-	}
+    getIncompleteTodos() {
+        return this.todos.filter(todo => !todo.completed);
+    }
 
-	updateName(newName) {
-		this.name = newName;
-	}
+    getCompletedTodos() {
+        return this.todos.filter(todo => todo.completed);
+    }
 
-	updateDescription(newDescription) {
-		this.description = newDescription;
-	}
-*/
+    updateName(newName) {
+        this.name = newName;
+    }
+
+    updateDescription(newDescription) {
+        this.description = newDescription;
+    }
+
+    toJSON() {
+        return {
+            id: this.id,
+            name: this.name,
+            description: this.description,
+            todos: this.todos.map(todo => todo.toJSON())
+        };
+    }
+
+    static fromJSON(data) {
+        const project = new Project({ name: data.name, description: data.description });
+        project.id = data.id;
+        project.todos = Array.isArray(data.todos)
+            ? data.todos.map(todo => TodoItem.fromJSON(todo))
+            : [];
+        return project;
+    }
 }
+
 
 const sampleProjects = [
-	new Project({ name: "Website Redesign", description: "Revamp the company homepage" }),
-	new Project({ name: "Marketing Campaign", description: "Launch fall social media ads" }),
-	new Project({ name: "Mobile App", description: "Build MVP for Android and iOS" }),
-	new Project({ name: "Data Migration", description: "Move legacy data to new system" }),
-	new Project({ name: "Customer Survey", description: "Collect feedback from beta users" }),
-	new Project({ name: "Internal Wiki", description: "Document team processes and tools" }),
-	new Project({ name: "SEO Optimization", description: "Improve search rankings for blog" }),
-	new Project({ name: "Bug Bash", description: "Team-wide bug fixing sprint" }),
-	new Project({ name: "Hiring Pipeline", description: "Streamline candidate tracking" }),
-	new Project({ name: "Quarterly Report", description: "Prepare slides for stakeholder review" }),
+    new Project({ name: "Website Redesign", description: "Revamp the company homepage" }),
+    new Project({ name: "Marketing Campaign", description: "Launch fall social media ads" }),
+    new Project({ name: "Mobile App", description: "Build MVP for Android and iOS" }),
+    new Project({ name: "Data Migration", description: "Move legacy data to new system" }),
+    new Project({ name: "Customer Survey", description: "Collect feedback from beta users" }),
+    new Project({ name: "Internal Wiki", description: "Document team processes and tools" }),
+    new Project({ name: "SEO Optimization", description: "Improve search rankings for blog" }),
+    new Project({ name: "Bug Bash", description: "Team-wide bug fixing sprint" }),
+    new Project({ name: "Hiring Pipeline", description: "Streamline candidate tracking" }),
+    new Project({ name: "Quarterly Report", description: "Prepare slides for stakeholder review" }),
 ];
 
-saveAllProjects(sampleProjects);
-
-export function currentProjects() {
-	const data = localStorage.getItem(getProjectKey());
-	if (!data) return [];
-	return JSON.parse(data);
-}
-
-export function saveProject(project) {
-	const projects = currentProjects();
-	projects.push(project);
-	localStorage.setItem(getProjectKey(), JSON.stringify(projects));
+const pm = new ProjectManager();
+if (!localStorage.getItem(pm.getProjectKey())) {
+    saveAllProjects(sampleProjects);
 }
 
 export function saveAllProjects(projects) {
-	localStorage.setItem(getProjectKey(), JSON.stringify(projects));
+    const pm = new ProjectManager();
+    const serialized = projects.map(p => (typeof p.toJSON === "function" ? p.toJSON() : p));
+    localStorage.setItem(pm.getProjectKey(), JSON.stringify(serialized));
 }

@@ -1,13 +1,13 @@
 
+export function getContent() {
+	return document.querySelector("#content");
+}
+
 export function clearContent() {
 	const content = getContent();
 	while (content.firstChild) {
 		content.removeChild(content.firstChild); 
 	}
-}
-
-export function getContent() {
-	return document.querySelector("#content");
 }
 
 export function getPageHeader() {
@@ -77,9 +77,56 @@ export function createDiv(className = "", id = "", children = []) {
 			div.appendChild(child);
 		}
 	});
-
 	return div;
 }
 
+export function createListbox(options = [], className = "", size = 10) {
+    const select = document.createElement("select");
+    select.multiple = true;
+    select.size = Math.min(size, options.length);
 
+    if (className) select.classList.add(...className.split(" "));
 
+    options.forEach(({ value, label }) => {
+        const opt = document.createElement("option");
+        opt.value = value;
+        opt.textContent = label;
+        select.appendChild(opt);
+    });
+
+    return select;
+}
+
+export function createSection(titleText, children = [], headerSize = "h3", className = "") {
+    const section = createDiv(className);
+    const title = createTitle(headerSize, titleText);
+    section.appendChild(title);
+
+    children.forEach(child => {
+        if (child instanceof Node) section.appendChild(child);
+    });
+
+    return section;
+}
+
+export function createLabel(text) {
+    const label = document.createElement("label");
+    label.textContent = text;
+    return label;
+}
+
+export function createSelect(options = [], defaultValue = "") {
+    const select = document.createElement("select");
+
+    options.forEach(optionText => {
+        const option = document.createElement("option");
+        option.value = optionText;
+        option.textContent = optionText;
+        if (optionText === defaultValue) {
+            option.selected = true;
+        }
+        select.appendChild(option);
+    });
+
+    return select;
+}

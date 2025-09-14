@@ -1,5 +1,5 @@
 import "./styles/styles.css";
-import { renderCreateProject, renderCreateTodo, loadHome, loadInbox, loadProjects, loadNotes } from "./modules/dom.js";
+import { renderCreateProject, renderCreateTodo, loadHome, loadInbox, loadProjects } from "./modules/dom.js";
 
 document.querySelector("#create-project").addEventListener("click", () => {
   renderCreateProject();
