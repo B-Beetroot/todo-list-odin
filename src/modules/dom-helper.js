@@ -130,3 +130,13 @@ export function createSelect(options = [], defaultValue = "") {
 
     return select;
 }
+
+/*
+export function setLayout(layoutType) {
+  const content = document.getElementById('content');
+  content.className = ''; // Clear previous layout
+  content.classList.add(layoutType);
+}
+
+setLayout('');
+*/

@@ -5,15 +5,10 @@
 }
 
 body {
-    margin: 0;
     font-family: 'Segoe UI', Tahoma, Verdana, sans-serif;
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
     background-color: #ecf0f1;
 }
 
-/* container */
 #container {
     display: flex;
     flex-wrap: wrap;
@@ -37,7 +32,6 @@ body {
 
 #sidebar a {
     display: block;
-    color: white;
     text-decoration: none;
     margin: 10px 0;
     cursor: pointer;
@@ -48,7 +42,6 @@ body {
 }
 
 button {
-    margin: 10px 5px;
     padding: 8px 16px;
     font-size: 14px;
     background-color: #0078D4;
@@ -57,28 +50,36 @@ button {
     border-radius: 4px;
     cursor: pointer;
 }
-button:hover { background-color: #005a9e; }
 
-h3, h4 { margin-top: 20px; color: #333; }
+.edit-button, .delete-button {
+    margin: 4px;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+}
+
+.delete-button:hover {
+    background-color: #882d23;
+}
+
+button:hover { 
+    background-color: #005a9e; 
+}
 
 label {
-    display: block;
-    margin-top: 10px;
     font-weight: bold;
+    cursor: text;
 }
 
 input, textarea, select {
     width: 100%;
     padding: 6px;
-    margin-top: 4px;
-    margin-bottom: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     font-size: 14px;
+    margin: 6px 0;
 }
-select[multiple] { height: 100px; }
-
-.empty-message { font-style: italic; color: #888; margin-top: 10px; }
 
 #main {
     display: flex;
@@ -104,18 +105,27 @@ select[multiple] { height: 100px; }
 .project-card {
     border: 1px solid #ccc;
     border-radius: 8px;
-    padding: 12px 16px;
+    padding: 12px;
     margin: 10px 0;
     background-color: #f9f9f9;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
-.project-card h4 { margin: 0 0 6px; font-size: 1.2em; color: #333; }
-.project-card p { margin: 0; color: #666; }
+
+.project-card h4 { 
+    margin: 0 0 6px; 
+    font-size: 1.2em; 
+    color: #333; 
+}
+.project-card p { 
+    margin: 0; 
+    color: #666; 
+}
 
 .pagination {
     margin-top: auto;
     text-align: center;
 }
+
 .pagination button {
     margin: 0 4px;
     padding: 6px 12px;
@@ -124,18 +134,26 @@ select[multiple] { height: 100px; }
     cursor: pointer;
     border-radius: 4px;
 }
+
 .pagination button.active {
     background-color: #007bff;
     color: white;
     font-weight: bold;
 }
 
-.project-list { flex-grow: 1; }
-.project-list-wrapper { display: flex; flex-direction: column; min-height: 100%; }
+.project-list { 
+    flex-grow: 1; 
+}
+.project-list-wrapper { 
+    display: flex; 
+    flex-direction: column; 
+    min-height: 100%; 
+}
 
-#nav-create, #nav { margin-top: 50px; }
+#nav-create, #nav { 
+    margin-top: 50px; 
+}
 
-/* checklist */
 .todo-checklist {
     list-style: none;
     padding-left: 0;
@@ -144,23 +162,24 @@ select[multiple] { height: 100px; }
     flex-direction: column;
     gap: 6px;
 }
+
 .todo-checklist-item {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 4px 0;
+	gap : 8px;
 }
+
 .todo-checklist-item .done {
     text-decoration: line-through;
     color: #888;
 }
+
 .todo-checklist-item input[type="checkbox"] {
     width: 16px;
     height: 16px;
     flex: 0 0 auto;
 }
 
-/* Todo card */
 .todo-card {
     border: 1px solid #e0e0e0;
     border-radius: 8px;
@@ -174,26 +193,44 @@ select[multiple] { height: 100px; }
     cursor: default;
     transition: opacity 0.18s ease, transform 0.12s ease;
 }
-.todo-card h3 { margin: 0; font-size: 1.05rem; color: #222; }
-.todo-card p { margin: 0; color: #555; font-size: 0.9rem; }
-.todo-card.completed { opacity: 0.25; }
 
-/* Priority */
+.todo-card h3 { 
+    margin: 0; 
+    font-size: 1.05rem; 
+    color: #222; 
+}
+
+.todo-card p { 
+    margin: 0; 
+    color: #555; 
+    font-size: 0.9rem; 
+}
+
+.todo-card.completed { 
+    opacity: 0.4; 
+}
+
 .todo-card.priority-high {
     border-left: 6px solid #e74c3c;
     background-color: #fff5f5;
 }
+
 .todo-card.priority-medium {
     border-left: 6px solid #f39c12;
     background-color: #fff8f0;
 }
+
 .todo-card.priority-low {
     border-left: 6px solid #2ecc71;
     background-color: #f6fff8;
 }
 
-/* Description / Notes */
-.todo-description { color: #444; margin-top: 6px; font-size: 0.95rem; }
+.todo-description { 
+    color: #444; 
+    margin-top: 6px; 
+    font-size: 0.95rem; 
+}
+
 .todo-notes {
     font-size: 0.95rem;
     color: #333;
@@ -203,7 +240,6 @@ select[multiple] { height: 100px; }
     border-radius: 4px;
 }
 
-/* Actions */
 .todo-actions {
     display: flex;
     gap: 8px;
@@ -212,7 +248,11 @@ select[multiple] { height: 100px; }
     align-items: center;
     justify-content: flex-end;
 }
-.todo-card button { padding: 6px 10px; font-size: 13px; }
+
+.todo-card button { 
+    padding: 6px 10px; 
+    font-size: 13px; 
+}
 
 .small-btn {
     padding: 4px 8px;
@@ -224,9 +264,10 @@ select[multiple] { height: 100px; }
     background-color: #d9534f;
 }
 
-.small-btn.danger:hover { background-color: #c9302c; }
+.small-btn.danger:hover { 
+    background-color: #c9302c; 
+}
 
-/* Inbox layout */
 .inbox {
     display: block;
 }
@@ -236,7 +277,6 @@ select[multiple] { height: 100px; }
     margin: 10px 0;
 }
 
-/* Collapsed state */
 .todo-card.collapsed .todo-description,
 .todo-card.collapsed .todo-notes,
 .todo-card.collapsed .todo-checklist,
@@ -244,24 +284,26 @@ select[multiple] { height: 100px; }
     display: none;
 }
 
-/* Card header */
 .todo-card-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 12px;
 }
+
 .todo-card-header-left {
     display: flex;
     align-items: center;
     gap: 8px;
     min-width: 0;
 }
+
 .todo-card-header-left .todo-title-wrapper {
     flex: 1 1 auto;
     min-width: 0;
     cursor: pointer;
 }
+
 .todo-card-header-left .todo-title-wrapper h3,
 .todo-card-header-left h3 {
     margin: 0;
@@ -272,18 +314,19 @@ select[multiple] { height: 100px; }
     text-overflow: ellipsis;
 }
 
-/* Toggle switch */
 .toggle-switch {
     position: relative;
     display: inline-block;
     width: 46px;
     height: 26px;
 }
+
 .toggle-switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
+
 .toggle-switch .slider {
     position: absolute;
     cursor: pointer;
@@ -295,6 +338,7 @@ select[multiple] { height: 100px; }
     transition: 0.2s;
     border-radius: 26px;
 }
+
 .toggle-switch .slider:before {
     position: absolute;
     content: "";
@@ -315,7 +359,6 @@ select[multiple] { height: 100px; }
     transform: translateX(20px);
 }
 
-/* card arrow */
 .card-arrow {
     display: inline-flex;
     align-items: center;
@@ -334,7 +377,6 @@ select[multiple] { height: 100px; }
     transform: rotate(180deg);
 }
 
-/* footer row: due left, actions right */
 .todo-card-footer {
     display: flex;
     justify-content: space-between;
@@ -348,23 +390,29 @@ select[multiple] { height: 100px; }
     font-size: 0.9rem;
 }
 
-/* checklist container for edit/create forms */
 .checklist-items {
     display: flex;
     flex-direction: column;
-    gap: 8px;
 }
 
 .dropdown-row {
   display: flex;
   align-items: baseline;
-  gap: 12px; /* Optional spacing between elements */
+  gap: 12px; 
 }
 
 .project-todo-item {
   display: flex;
-  align-items: baseline;
-  gap: 12px; /* Optional spacing between elements */
+  align-items: center;
+}
+
+.project-todos-list > div {
+    padding: 0px 8px;
+    margin: 8px 0px;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    border: 1px solid #ccc;
 }
 
 .small-btn.remove {
@@ -394,4 +442,42 @@ textarea {
 
 .checklist-input {
     max-width: 700px;
+}
+
+.empty-line  {
+    display: flex;
+    align-items: center;
+    height: 39px;
+    padding-left: 16px !important;  
+}
+
+.project-todo-title {
+    padding: 0px 8px;
+    margin: 8px 0px;
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+}
+
+.custom-dialog {
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  background: #fff;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1000;
+  font-family: sans-serif;
+  font-size: 16px;
+  text-align: center;
+}
+
+.custom-dialog button {
+  margin-top: 10px;
+  padding: 6px 12px;
+  font-size: 14px;
+  cursor: pointer;
 }
