@@ -48,7 +48,7 @@ export function renderCreateProject() {
 		unattachedTodosArr.forEach(todo => {
 			const option = document.createElement("option");
 			option.value = String(todo.id);
-			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
+			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`;
 			todoSelect.appendChild(option);
 		});
 	}
@@ -83,7 +83,7 @@ export function renderCreateProject() {
 		}
 		projectTodos.forEach(todo => {
 			const item = domHelper.createDiv("project-todo-item");
-			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`);
+			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`);
 			title.classList.add("project-todo-title");
 			const removeBtn = domHelper.createButton("−", () => {
 				const idx = projectTodos.findIndex(t => t.id === todo.id);
@@ -216,7 +216,7 @@ export function renderEditProject(projectId) {
 		unattachedTodosArr.forEach(todo => {
 			const option = document.createElement("option");
 			option.value = String(todo.id);
-			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
+			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`;
 			todoSelect.appendChild(option);
 		});
 	}
@@ -250,7 +250,7 @@ export function renderEditProject(projectId) {
 		}
 		projectTodos.forEach(todo => {
 			const item = domHelper.createDiv("project-todo-item");
-			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`);
+			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`);
 			title.classList.add("project-todo-title");
 			const removeBtn = domHelper.createButton("−", () => {
 				const idx = projectTodos.findIndex(t => t.id === todo.id);
@@ -815,7 +815,7 @@ export function loadHome() {
         const item = domHelper.createDiv("home-todo-item");
         const text = document.createElement("div");
 		text.classList.add("todo-title-home");
-        text.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
+        text.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`;
 		
 		text.addEventListener("click", () => {
 			domHelper.clearPageHeader();
@@ -1142,7 +1142,7 @@ export function renderTodoList(unattachedOnly = false, projectId = null, todoId 
 		const footer = domHelper.createDiv("todo-card-footer");
 		const due = domHelper.createDiv("todo-due");
 		due.textContent = todo.dueDate && !isNaN(new Date(todo.dueDate))
-			? `Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`
+			? `Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`
 			: "";
 
 		footer.append(due, actions);
@@ -1222,7 +1222,7 @@ export function loadProjects() {
 					const todoItem = domHelper.createDiv("project-todo-item");
 					const todoText = document.createElement("p");
 					todoText.classList.add("project-todo-text");
-					todoText.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
+					todoText.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("tr-TR")}`;
 					todoItem.appendChild(todoText);
 					todosContainer.appendChild(todoItem);
 				});
