@@ -1,4 +1,3 @@
-
 export function getContent() {
 	return document.querySelector("#content");
 }
@@ -131,12 +130,8 @@ export function createSelect(options = [], defaultValue = "") {
     return select;
 }
 
-/*
 export function setLayout(layoutType) {
-  const content = document.getElementById('content');
-  content.className = ''; // Clear previous layout
+  const content = document.querySelector("#content");
+  content.className = ""; 
   content.classList.add(layoutType);
 }
-
-setLayout('');
-*/

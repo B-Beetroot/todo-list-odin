@@ -5,6 +5,7 @@ import { ProjectManager } from "./project-manager.js";
 import * as domHelper from "./dom-helper.js";
 
 export function renderCreateProject() {
+	domHelper.setLayout("create-edit-page");
 	domHelper.clearContent();
 	const content = domHelper.getContent();
 	domHelper.clearPageHeader();
@@ -13,7 +14,7 @@ export function renderCreateProject() {
 	pageHeader.appendChild(domHelper.createTitle("h1", "Create Project"));
 
 	const { label: projectLabel, input: projectInput } = domHelper.createLabeledInput("Title:", "text");
-	projectInput.maxLength = 90;
+	projectInput.maxLength = 60;
 	const { label: descLabel, input: descInput } = domHelper.createLabeledInput("Description:", "textarea");
 	descInput.maxLength = 240;
 
@@ -47,7 +48,7 @@ export function renderCreateProject() {
 		unattachedTodosArr.forEach(todo => {
 			const option = document.createElement("option");
 			option.value = String(todo.id);
-			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toDateString()}`;
+			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
 			todoSelect.appendChild(option);
 		});
 	}
@@ -82,7 +83,7 @@ export function renderCreateProject() {
 		}
 		projectTodos.forEach(todo => {
 			const item = domHelper.createDiv("project-todo-item");
-			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toDateString()}`);
+			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`);
 			title.classList.add("project-todo-title");
 			const removeBtn = domHelper.createButton("−", () => {
 				const idx = projectTodos.findIndex(t => t.id === todo.id);
@@ -160,6 +161,7 @@ export function renderCreateProject() {
 }
 
 export function renderEditProject(projectId) {
+	domHelper.setLayout("create-edit-page");
 	domHelper.clearContent();
 	const content = domHelper.getContent();
 	domHelper.clearPageHeader();
@@ -177,7 +179,7 @@ export function renderEditProject(projectId) {
 
 	const { label: projectLabel, input: projectInput } = domHelper.createLabeledInput("Title:", "text");
 	projectInput.value = project.name || "";
-	projectInput.maxLength = 90;
+	projectInput.maxLength = 60;
 
 	const { label: descLabel, input: descInput } = domHelper.createLabeledInput("Description:", "textarea");
 	descInput.value = project.description || "";
@@ -214,7 +216,7 @@ export function renderEditProject(projectId) {
 		unattachedTodosArr.forEach(todo => {
 			const option = document.createElement("option");
 			option.value = String(todo.id);
-			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toDateString()}`;
+			option.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
 			todoSelect.appendChild(option);
 		});
 	}
@@ -248,7 +250,7 @@ export function renderEditProject(projectId) {
 		}
 		projectTodos.forEach(todo => {
 			const item = domHelper.createDiv("project-todo-item");
-			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toDateString()}`);
+			const title = domHelper.createTitle("div", `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`);
 			title.classList.add("project-todo-title");
 			const removeBtn = domHelper.createButton("−", () => {
 				const idx = projectTodos.findIndex(t => t.id === todo.id);
@@ -326,8 +328,8 @@ export function renderEditProject(projectId) {
 	);
 }
 
-
 export function renderCreateTodo() {
+	domHelper.setLayout("create-edit-page");
 	domHelper.clearContent();
 	const content = domHelper.getContent();
 
@@ -349,14 +351,14 @@ export function renderCreateTodo() {
 	const prioritySelect = domHelper.createSelect(["Low", "Medium", "High"], "Medium");
 
 	const projectManager = new ProjectManager();
-	const projects = projectManager.getAllProjects();
+	const projects = projectManager.getAllProjects().slice().reverse();;
 
 	const projectLabelEl = domHelper.createLabel("Attach to a Project:");
 	const projectSelect = document.createElement("select");
 
 	const noneOption = document.createElement("option");
 	noneOption.value = "";
-	noneOption.textContent = "No project";
+	noneOption.textContent = "No project attached.";
 	projectSelect.appendChild(noneOption);
 
 	projects.forEach(p => {
@@ -369,7 +371,7 @@ export function renderCreateTodo() {
 	const checklistContainer = document.createElement("div");
 	checklistContainer.className = "checklist-container";
 
-	const checklistTitle = domHelper.createTitle("h3", "Checklist");
+	const checklistTitle = domHelper.createTitle("label", "Checklist:");
 	const checklistItems = document.createElement("div");
 	checklistItems.className = "checklist-items";
 
@@ -537,7 +539,8 @@ export function renderCreateTodo() {
 	);
 }
 
-export function renderEditTodo(todoId) {
+export function renderEditTodo(todoId, returnToProjectId = null) {
+	domHelper.setLayout("create-edit-page");
 	const manager = new TodoManager();
 	const todo = manager.getTodoById(todoId);
 	if (!todo) return console.log("Todo not found");
@@ -571,7 +574,7 @@ export function renderEditTodo(todoId) {
 	const checklistContainer = document.createElement("div");
 	checklistContainer.className = "checklist-container";
 
-	const checklistTitle = domHelper.createTitle("h3", "Checklist");
+	const checklistTitle = domHelper.createTitle("label", "Checklist:");
 	const checklistItems = document.createElement("div");
 	checklistItems.className = "checklist-items";
 
@@ -666,6 +669,33 @@ export function renderEditTodo(todoId) {
 
 	checklistContainer.append(checklistTitle, checklistItems);
 
+	const projectManager = new ProjectManager();
+	const allProjects = projectManager.getAllProjects().slice().reverse();;
+
+	const projectLabelEl = domHelper.createLabel("Attached Project:");
+	const projectSelect = document.createElement("select");
+
+	const noneOption = document.createElement("option");
+	noneOption.value = "";
+	noneOption.textContent = "No project attached.";
+	projectSelect.appendChild(noneOption);
+
+	let currentProjectId = null;
+	allProjects.forEach(p => {
+		if ((p.todos || []).some(t => t?.id === todo.id)) {
+			currentProjectId = p.id;
+		}
+
+		const opt = document.createElement("option");
+		opt.value = p.id;
+		opt.textContent = p.name;
+		if (p.id === currentProjectId) {
+			opt.selected = true;
+		}
+		projectSelect.appendChild(opt);
+	});
+
+
 	const updateBtn = domHelper.createButton("Update Todo", () => {
 		if (!titleInput.reportValidity()) return;
 		if (!descInput.reportValidity()) return;
@@ -688,6 +718,24 @@ export function renderEditTodo(todoId) {
 
 			manager.updateTodo(todo);
 
+			const selectedProjectId = projectSelect.value;
+			const pm = new ProjectManager();
+			const allProjects = pm.getAllProjects();
+
+			allProjects.forEach(p => {
+				p.todos = (p.todos || []).filter(t => t?.id !== todo.id);
+				pm.updateProject(p.id, { todos: p.todos });
+			});
+
+			if (selectedProjectId) {
+				const selectedProject = pm.getProjectById(selectedProjectId);
+				if (selectedProject) {
+					selectedProject.addTodo(todo);
+					pm.updateProject(selectedProject.id, { todos: selectedProject.todos });
+				}
+			}
+
+
 		const dialog = document.createElement("dialog");
 		dialog.classList.add("custom-dialog");
 
@@ -707,7 +755,22 @@ export function renderEditTodo(todoId) {
 
 		dialog.showModal();
 
+
+		const redirectProjectId = selectedProjectId || returnToProjectId;
+		if (redirectProjectId) {
+			const pManager = new ProjectManager();
+			let project = pManager.getProjectById(redirectProjectId);
+			domHelper.setLayout("projects-page");
+			const title = domHelper.createTitle("h4", project.name);
+			title.classList.add("project-title");
+			domHelper.clearPageHeader();
+			const pageHeader = domHelper.getPageHeader();
+			pageHeader.appendChild(domHelper.createTitle("h1", project.name));
+			renderTodoList(false, redirectProjectId);
+		} else {
 			loadInbox();
+		}
+
 		} catch (error) {
 			console.log(error.message || "An error occurred while updating the todo.");
 		}
@@ -720,11 +783,13 @@ export function renderEditTodo(todoId) {
 		priorityLabel, prioritySelect,
 		notesLabel, notesInput,
 		checklistContainer,
+		projectLabelEl, projectSelect,
 		updateBtn
 	);
 }
 
 export function loadHome() {
+	domHelper.setLayout("home-page");
 	domHelper.clearContent();
 	const content = domHelper.getContent();
 
@@ -733,15 +798,137 @@ export function loadHome() {
 
 	const pageHeaderContent = domHelper.createTitle("h1", "Home");
 	pageHeader.appendChild (pageHeaderContent);
+
+	function createTodoColumn(titleText, todos) {
+    const col = domHelper.createDiv("home-column");
+    const title = domHelper.createTitle("h2", titleText);
+    col.appendChild(title);
+
+    if (todos.length === 0) {
+        const empty = document.createElement("p");
+        empty.textContent = "No Todos to show.";
+        col.appendChild(empty);
+        return col;
+    }
+
+    todos.forEach(todo => {
+        const item = domHelper.createDiv("home-todo-item");
+        const text = document.createElement("div");
+		text.classList.add("todo-title-home");
+        text.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
+		
+		text.addEventListener("click", () => {
+			domHelper.clearPageHeader();
+			const pageHeader = domHelper.getPageHeader();
+			pageHeader.appendChild(domHelper.createTitle("h1", todo.title));
+			domHelper.setLayout("projects-page");
+			renderTodoList(false, null, todo.id);
+		});
+
+
+        item.appendChild(text);
+        col.appendChild(item);
+    });
+
+    return col;
+	}
+
+	function createProjectColumn(titleText, projects) {
+    const col = domHelper.createDiv("home-column");
+    const title = domHelper.createTitle("h2", titleText);
+    col.appendChild(title);
+
+    if (projects.length === 0) {
+        const empty = document.createElement("p");
+        empty.textContent = "No projects created yet.";
+        col.appendChild(empty);
+        return col;
+    }
+
+	projects.forEach(project => {
+		const item = domHelper.createDiv("home-project-item");
+		const text = document.createElement("p");
+		text.classList.add("project-title-home");
+		text.textContent = `${project.name}`;
+
+		text.addEventListener("click", () => {
+			domHelper.clearPageHeader();
+			const pageHeader = domHelper.getPageHeader();
+			pageHeader.appendChild(domHelper.createTitle("h1", project.name));
+			domHelper.setLayout("projects-page");
+			if (project.todos && project.todos.length === 0) {
+				domHelper.clearContent();
+				const empty = domHelper.createTitle("div", "No todos found for this project.");
+				empty.classList.add("empty-todo-card");
+				content.appendChild(empty);
+			} else {
+				renderTodoList(false, project.id);
+			}
+		});
+
+		item.appendChild(text);
+		col.appendChild(item);   
+	});
+
+
+    return col;
+	}
+
+	function getUpcomingTodos(limit = 5) {
+    const todos = new TodoManager().getAllTodo();
+    const now = new Date();
+    return todos
+        .filter(t => !t.completed && new Date(t.dueDate) > now)
+        .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+        .slice(0, limit);
+	}
+
+	function getLatestTodos(limit = 5) {
+		const todos = new TodoManager().getAllTodo();
+		return todos
+			.sort((a, b) => b.updatedAt - a.updatedAt)
+			.slice(0, limit);
+	}
+
+	function getOverdueTodos(limit = 5) {
+		const todos = new TodoManager().getAllTodo();
+		const now = new Date();
+		return todos
+			.filter(t => !t.completed && new Date(t.dueDate) < now)
+			.sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate))
+			.slice(0, limit);
+	}
+
+	function getLatestProjects(limit = 10) {
+		const projects = new ProjectManager().getAllProjects();
+		return projects.reverse().slice(0, limit);
+	}
+
+
+
+	const upcomingCol = createTodoColumn("Upcoming Todos", getUpcomingTodos());
+	upcomingCol.classList.add("upcoming-col");
+    const latestCol = createTodoColumn("Latest Todos", getLatestTodos());
+	latestCol.classList.add("latest-col");
+    const overdueCol = createTodoColumn("Overdue Todos", getOverdueTodos());
+	overdueCol.classList.add("overdue-col");
+    const projectsCol = createProjectColumn("Latest Projects", getLatestProjects());
+	projectsCol.classList.add("latest-col");
+
+	content.append(latestCol, upcomingCol, overdueCol, projectsCol);
 }
 
-export function renderTodoList(unattachedOnly = false) {
+export function renderTodoList(unattachedOnly = false, projectId = null, todoId = null) {
 	domHelper.clearContent();
 	const content = domHelper.getContent();
 	const manager = new TodoManager();
 	let todos = manager.getAllTodo();
 
-	if (unattachedOnly) {
+	if (projectId !== null) {
+    const pm = new ProjectManager();
+    const project = pm.getProjectById(projectId);
+    todos = project?.todos || [];
+	} else	if (unattachedOnly) {
 		const pm = new ProjectManager();
 		const projects = pm.getAllProjects();
 		const attachedIds = new Set();
@@ -754,22 +941,37 @@ export function renderTodoList(unattachedOnly = false) {
 		});
 		todos = todos.filter(t => !attachedIds.has(t.id));
 
-		const prioRank = p => (p === "High" ? 0 : p === "Medium" ? 1 : 2);
-		todos.sort((a, b) => {
-			const da = new Date(a.dueDate);
-			const db = new Date(b.dueDate);
-			const aInvalid = isNaN(da);
-			const bInvalid = isNaN(db);
-			if (aInvalid && bInvalid) {
-				const pr = prioRank(a.priority) - prioRank(b.priority);
-				return pr !== 0 ? pr : a.title.localeCompare(b.title);
-			}
-			if (aInvalid) return 1;
-			if (bInvalid) return -1;
-			if (da - db !== 0) return da - db;
+	} else if (todoId !== null) {
+		const singleTodo = manager.getTodoById(todoId);
+		todos = singleTodo ? [singleTodo] : [];
+	}
+
+	const prioRank = p => (p === "High" ? 0 : p === "Medium" ? 1 : 2);
+	todos.sort((a, b) => {
+		const da = new Date(a.dueDate);
+		const db = new Date(b.dueDate);
+		const aInvalid = isNaN(da);
+		const bInvalid = isNaN(db);
+		if (aInvalid && bInvalid) {
 			const pr = prioRank(a.priority) - prioRank(b.priority);
 			return pr !== 0 ? pr : a.title.localeCompare(b.title);
-		});
+		}
+		if (aInvalid) return 1;
+		if (bInvalid) return -1;
+		if (da - db !== 0) return da - db;
+		const pr = prioRank(a.priority) - prioRank(b.priority);
+		return pr !== 0 ? pr : a.title.localeCompare(b.title);
+	});	
+
+	if (todos.length === 0) {
+		domHelper.clearContent();
+		const emptyMessage = unattachedOnly
+        ? "Inbox is empty. No unattached todos found."
+        : "No todos found for this project.";
+		const empty = domHelper.createTitle("div", emptyMessage);
+		empty.classList.add("empty-todo-card");
+		content.appendChild(empty);
+		return;
 	}
 
 	todos.forEach(todo => {
@@ -869,7 +1071,7 @@ export function renderTodoList(unattachedOnly = false) {
 			"Edit",
 			(evt) => {
 				evt.stopPropagation();
-				renderEditTodo(todo.id);
+				renderEditTodo(todo.id, projectId); 
 			},
 			"small-btn"
 		);
@@ -883,7 +1085,7 @@ export function renderTodoList(unattachedOnly = false) {
 				dialog.classList.add("custom-dialog");
 
 				const message = document.createElement("p");
-				message.textContent = `🗑️ Are you sure you want to delete "${todo.title}"?`;
+				message.textContent = `Are you sure you want to delete "${todo.title}"?`;
 
 				const confirmBtn = document.createElement("button");
 				confirmBtn.textContent = "Yes";
@@ -895,6 +1097,28 @@ export function renderTodoList(unattachedOnly = false) {
 				confirmBtn.addEventListener("click", () => {
 					new TodoManager().deleteTodo(todo.id);
 					renderTodoList(unattachedOnly);
+									
+					if (projectId !== null) {
+						const pManager = new ProjectManager();
+						const project = pManager.getProjectById(projectId);
+
+						project.todos = (project.todos || []).filter(t => {
+							const id = typeof t === "string" ? t : t?.id;
+							return id !== todo.id;
+						});
+
+						pManager.updateProject(project.id, { todos: project.todos });
+
+						domHelper.setLayout("projects-page");
+						domHelper.clearPageHeader();
+						const pageHeader = domHelper.getPageHeader();
+						pageHeader.appendChild(domHelper.createTitle("h1", project.name));
+						renderTodoList(false, projectId);
+					} else {
+						loadHome();
+					}
+
+
 					dialog.close();
 					dialog.remove();
 				});
@@ -918,7 +1142,7 @@ export function renderTodoList(unattachedOnly = false) {
 		const footer = domHelper.createDiv("todo-card-footer");
 		const due = domHelper.createDiv("todo-due");
 		due.textContent = todo.dueDate && !isNaN(new Date(todo.dueDate))
-			? `Due Date: ${new Date(todo.dueDate).toDateString()}`
+			? `Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`
 			: "";
 
 		footer.append(due, actions);
@@ -934,9 +1158,8 @@ export function renderTodoList(unattachedOnly = false) {
 	});
 }
 
-
-
 export function loadInbox() {
+	domHelper.setLayout("inbox-page");
 	domHelper.clearContent();
 	domHelper.clearPageHeader();
 	const content = domHelper.getContent();
@@ -951,6 +1174,7 @@ export function loadInbox() {
 }
 
 export function loadProjects() {
+	domHelper.setLayout("projects-page");
 	domHelper.clearPageHeader();
 	const pageHeader = domHelper.getPageHeader();
 	pageHeader.appendChild(domHelper.createTitle("h1", "Projects"));
@@ -974,8 +1198,39 @@ export function loadProjects() {
 
 		pageProjects.forEach(project => {
 			const title = domHelper.createTitle("h4", project.name);
+			title.classList.add("project-title");
+			title.addEventListener("click", () => {
+				domHelper.clearPageHeader();
+				const pageHeader = domHelper.getPageHeader();
+				pageHeader.appendChild(domHelper.createTitle("h1", project.name));
+				if (project.todos && project.todos.length === 0) { 
+					domHelper.clearContent();
+					const empty = domHelper.createTitle("div", "No todos found for this project.");
+					empty.classList.add("empty-todo-card");
+					content.appendChild(empty);
+				} else {
+					renderTodoList(false, project.id);
+				}
+			});
 			const description = document.createElement("p");
 			description.textContent = project.description;
+
+			const todosContainer = domHelper.createDiv("project-todos");
+
+			if (project.todos && project.todos.length > 0) {
+				project.todos.forEach(todo => {
+					const todoItem = domHelper.createDiv("project-todo-item");
+					const todoText = document.createElement("p");
+					todoText.classList.add("project-todo-text");
+					todoText.textContent = `${todo.title} - Due Date: ${new Date(todo.dueDate).toLocaleDateString("en-EN")}`;
+					todoItem.appendChild(todoText);
+					todosContainer.appendChild(todoItem);
+				});
+			} else {
+				const noTodos = document.createElement("p");
+				noTodos.textContent = "No todos attached.";
+				todosContainer.appendChild(noTodos);
+			}
 
 			const editBtn = domHelper.createButton(
 				"Edit",
@@ -990,7 +1245,7 @@ export function loadProjects() {
 					dialog.classList.add("custom-dialog");
 
 					const message = document.createElement("p");
-					message.textContent = `🗑️ Are you sure you want to delete "${project.name}"?`;
+					message.textContent = `Are you sure you want to delete "${project.name}"?`;
 
 					const confirmBtn = document.createElement("button");
 					confirmBtn.textContent = "Yes";
@@ -1026,10 +1281,14 @@ export function loadProjects() {
 				"delete-button"
 			);
 
+			const projectBtnSection = document.createElement("div");
+			projectBtnSection.classList.add("project-btn-section");
+			projectBtnSection.append(editBtn,deleteBtn);
+
 			const projectCard = domHelper.createDiv(
 				"project-card",
 				"",
-				[title, description, editBtn, deleteBtn]
+				[title, description, todosContainer, projectBtnSection]
 			);
 
 			projectList.appendChild(projectCard);
