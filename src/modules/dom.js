@@ -884,7 +884,7 @@ export function loadHome() {
 	}
 
 	function getLatestTodos(limit = 5) {
-		const todos = new TodoManager().getAllTodo();
+		const todos = new TodoManager().getAllTodo().reverse();
 		return todos
 			.sort((a, b) => b.updatedAt - a.updatedAt)
 			.slice(0, limit);
